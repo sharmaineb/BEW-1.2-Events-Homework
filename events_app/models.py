@@ -18,6 +18,9 @@ class Guest(db.Model):
 
     events_attending = db.relationship('Event', secondary='guest_event', back_populates='guests')
 
+    def __repr__(self):
+        return f'<Name: {self.name}>'
+
 # TODO: Create a model called `Event` with the following fields:
 # - id: primary key
 # - title: String column
@@ -42,6 +45,9 @@ class Event(db.Model):
     date_and_time = db.Column(db.DateTime, nullable=False)
     
     guests = db.relationship('Guest', secondary='guest_event', back_populates='events_attending')
+
+    def __repr__(self):
+        return f'<Title: {self.title}>'
 
 # TODO: Create a table `guest_event_table` with the following columns:
 # - event_id: Integer column (foreign key)
