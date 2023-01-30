@@ -39,12 +39,13 @@ def create():
                 error='Incorrect datetime format! Please try again.')
 
         new_event = Event(
-            title = new_event_title,
-            description = new_event_description,
-            date_and_time = date_and_time
+            title=new_event_title,
+            description=new_event_description,
+            date_and_time=date_and_time
         )
         db.session.add(new_event)
         db.session.commit()
+        
         flash('Event created.')
 
         return redirect(url_for('main.index'))
@@ -57,6 +58,7 @@ def event_detail(event_id):
     """Show a single event."""
 
     event = Event.query.get(event_id)
+
     return render_template('event_detail.html', event=event)
 
 
@@ -77,12 +79,8 @@ def rsvp(event_id):
             error = "Error"
             flash(error)
     
-        # TODO: If the guest does exist, add the event to their 
-        # events_attending, then commit to the database.
-        else:
-            guest.events_attending.append(event)
-            db.session.add(guest)
-            db.session.commit()
+        guest.events_attending.append(event)
+        db.session.commit()
     else:
         guest_email = request.form.get('email')
         guest_phone = request.form.get('phone')
