@@ -78,18 +78,18 @@ def rsvp(event_id):
         if guest is None:
             error = "Error"
             flash(error)
-    
-        guest.events_attending.append(event)
-        db.session.commit()
+        else:
+            guest.events_attending.append(event)
+            db.session.commit()
     else:
         guest_email = request.form.get('email')
         guest_phone = request.form.get('phone')
         
         # TODO: Create a new guest with the given name, email, and phone, and 
         # add the event to their events_attending, then commit to the database.
-        new_guest = Guest(name=guest_name, email=guest_email, phone=guest_phone)
-        new_guest.events_attending.append(event)
-        db.session.add(new_guest)
+        guest = Guest(name=guest_name, email=guest_email, phone=guest_phone)
+        guest.events_attending.append(event)
+        db.session.add(guest)
         db.session.commit()
        
     
@@ -100,5 +100,5 @@ def rsvp(event_id):
 @main.route('/guest/<guest_id>')
 def guest_detail(guest_id):
     # TODO: Get the guest with the given id and send to the template
-    guest = Guest.query.get(id=guest_id).first()
+    guest = Guest.query.get(guest_id)
     return render_template('guest_detail.html', guest=guest)
